@@ -7,7 +7,19 @@ class Interface(QtWidgets.QMainWindow):
         uic.loadUi('employeeGUI.ui',self)
         self.pushButton_add.clicked.connect(self.add)
         self.pushButton_edit.clicked.connect(self.edit)
+        self.pushButton_remove.clicked.connect(self.remove)
+        self.pushButton_up.clicked.connect(self.up)
+        self.pushButton_down.clicked.connect(self.down)
+        self.pushButton_sort.clicked.connect(self.sort)
+        self.pushButton_close.clicked.connect(self.close)
+
         self.Employee()
+
+    def sort(self):
+        self.listWidget.sort()
+
+    def close(self):
+        quit()
 
     def Employee(self):
         self.emp = ["Garuba", "Malik", "Soladayo"]
@@ -29,8 +41,35 @@ class Interface(QtWidgets.QMainWindow):
             Item.setText(text)
             #self.listWidget.insertItem(row, text)
 
-    def onclick_add(self):
-        pass
+    def remove(self):
+        row = self.listWidget.currentRow()
+        item = self.listWidget.item(row)
+        if item is None:
+            return
+        reply = QtWidgets.QMessageBox.question(self,"Remove Employee","Do you want to remove employee "+item.text(),QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            item = self.listWidget.takeItem(row)
+            del item
+
+    def up(self):
+        row = self.listWidget.currentRow()
+
+        if row >= 1:
+            item = self.listWidget.takeItem(row)
+            self.listWidget.insertItem(row -1, item)
+            self.listWidget.setCurrentItem(item)
+
+    def down(self):
+        row = self.listWidget.currentRow()
+        #self.listWidget.
+
+
+        if row < self.listWidget.count()-1:
+            item = self.listWidget.takeItem(row)
+            self.listWidget.insertItem(row +1, item)
+            self.listWidget.setCurrentItem(item)
+
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
